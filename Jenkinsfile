@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         // *** 1. ตรวจสอบชื่อ ID นี้ในหน้า Credentials ของ Jenkins ให้ตรงเป๊ะ ***
-        DOCKER_HUB_CREDS = 'dockerhub-creds' 
+        DOCKER_HUB_CREDS = 'docker-hub-credentials' 
         DOCKER_IMAGE = "thanadonruangpakdee/finead-todo-app:latest"
     }
 
