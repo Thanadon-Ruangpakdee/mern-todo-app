@@ -1,19 +1,18 @@
-# ใช้ Node Alpine ตามคำสั่ง
 FROM node:18-alpine
 
 WORKDIR /app
 
-# ก๊อปปี้ package files เข้าไปติดตั้งก่อน
+# 1. ก๊อปปี้ไฟล์ package จาก backend มาลงที่ root ของ /app
 COPY TODO/todo_backend/package*.json ./
 RUN npm install
 
-# ก๊อปปี้โค้ดที่เหลือ (ตรวจสอบว่า path todo_backend ถูกต้องตาม repo ที่ fork มา)
-COPY . .
+# 2. ก๊อปปี้ทุกอย่างจากใน todo_backend มาไว้ที่ /app เลย (ไม่ต้องซ้อนโฟลเดอร์ TODO)
+COPY TODO/todo_backend/ .
 
-# ย้ายไปโฟลเดอร์ที่มี server.js
-WORKDIR /app/TODO/todo_backend
+# 3. เช็กว่าโฟลเดอร์ static อยู่ที่นี่ไหม ถ้ามีให้ก๊อปมาด้วย
+# ปกติ COPY . . จะเอามาหมดแล้ว
 
-# สำคัญ: ต้องเป็นพอร์ต 5000 ตามโจทย์ข้อ 3
 EXPOSE 5000
 
+# รันจาก /app ได้เลยเพราะเราก๊อปไฟล์มาไว้ที่นี่แล้ว
 CMD ["node", "server.js"]
