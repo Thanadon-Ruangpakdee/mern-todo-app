@@ -1,22 +1,19 @@
-# 1. Use lightweight image
+# ใช้ Node Alpine ตามคำสั่ง
 FROM node:18-alpine
 
-# 2. Set working directory
 WORKDIR /app
 
-# 3. Copy package files and install dependencies
-# เราต้องชี้ไปที่ folder todo_backend เพราะ server อยู่ที่นั่น
+# ก๊อปปี้ package files เข้าไปติดตั้งก่อน
 COPY TODO/todo_backend/package*.json ./
 RUN npm install
 
-# 4. Copy the rest of the application
+# ก๊อปปี้โค้ดที่เหลือ (ตรวจสอบว่า path todo_backend ถูกต้องตาม repo ที่ fork มา)
 COPY . .
 
-# 5. Move to the backend directory to run the app
+# ย้ายไปโฟลเดอร์ที่มี server.js
 WORKDIR /app/TODO/todo_backend
 
-# 6. Expose port 5000 as per exam requirement
+# สำคัญ: ต้องเป็นพอร์ต 5000 ตามโจทย์ข้อ 3
 EXPOSE 5000
 
-# 7. Start the application
 CMD ["node", "server.js"]
