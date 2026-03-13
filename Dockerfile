@@ -2,17 +2,20 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# 1. ก๊อปปี้ไฟล์ package จาก backend มาลงที่ root ของ /app
+# 1. ติดตั้ง dependencies ของ Backend
 COPY TODO/todo_backend/package*.json ./
 RUN npm install
 
-# 2. ก๊อปปี้ทุกอย่างจากใน todo_backend มาไว้ที่ /app เลย (ไม่ต้องซ้อนโฟลเดอร์ TODO)
+# 2. ก๊อปปี้ไฟล์ Backend ทั้งหมดมาไว้ที่ /app
 COPY TODO/todo_backend/ .
 
-# 3. เช็กว่าโฟลเดอร์ static อยู่ที่นี่ไหม ถ้ามีให้ก๊อปมาด้วย
-# ปกติ COPY . . จะเอามาหมดแล้ว
+# 3. แก้ปัญหา Error: สร้างโฟลเดอร์ที่แอปเรียกหา และก๊อปปี้ Frontend เข้าไป
+# เราจะก๊อปไฟล์จาก todo_frontend ไปไว้ในโฟลเดอร์ที่ Backend มองหา (static/build)
+RUN mkdir -p static/build
+COPY TODO/todo_frontend/public/ static/build/
+# ก๊อปปี้ไฟล์ index.html หลักเข้าไป (ตัวที่ Error ฟ้องว่าหาไม่เจอ)
+COPY TODO/todo_frontend/public/index.html static/build/index.html
 
 EXPOSE 5000
 
-# รันจาก /app ได้เลยเพราะเราก๊อปไฟล์มาไว้ที่นี่แล้ว
 CMD ["node", "server.js"]
